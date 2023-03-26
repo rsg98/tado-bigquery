@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	tadodailyreport "tado-bigquery/protos"
 	"time"
 
 	"github.com/robertkrimen/otto"
@@ -18,8 +19,6 @@ import (
 	"cloud.google.com/go/bigquery/storage/apiv1/storagepb"
 	"cloud.google.com/go/bigquery/storage/managedwriter"
 	"cloud.google.com/go/bigquery/storage/managedwriter/adapt"
-
-	"github.com/rsg98/tado-bigquery/protos/tadodailyreport"
 )
 
 const tadoConfigEndpoint = "https://app.tado.com/env.js"
