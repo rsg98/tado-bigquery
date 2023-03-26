@@ -1,0 +1,61 @@
+syntax = "proto2";
+
+option go_package = "github.com/rsg98/tado-bigquery/protos/tadodailyreport";
+
+package main;
+
+message Tadodailyreport {
+	required int64 zone_id = 1;
+	required string zone_name = 2;
+	
+	message Interval {
+		required int64 from = 1;
+		required int64 to = 2;
+	}
+
+	required Interval interval = 3;
+	
+	message Settings {
+		required int64 from = 1;
+		required int64 to = 2;
+		required float temperature = 3;
+	}
+
+	repeated Settings settings = 4;
+	
+	message Measureddata {
+		
+		message Insidetemperature {
+			required int64 timestamp = 1;
+			required float temperature = 2;
+		}
+	
+		repeated Insidetemperature inside_temperature = 1;
+		
+		message Humidity {
+			required int64 timestamp = 1;
+			required float humidity = 2;
+		}
+	
+		repeated Humidity humidity = 2;
+	}
+
+	repeated Measureddata measured_data = 5;
+	
+	message Callforheat {
+		required int64 from = 1;
+		required int64 to = 2;
+		required string heat_rate = 3;
+	}
+
+	repeated Callforheat call_for_heat = 6;
+	
+	message Weather {
+		required int64 from = 1;
+		required int64 to = 2;
+		required string state = 3;
+		required float temperature = 4;
+	}
+
+	repeated Weather weather = 7;
+}

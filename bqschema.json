@@ -1,0 +1,160 @@
+[
+      {
+        "mode": "REQUIRED",
+        "name": "ZoneID",
+        "type": "INTEGER"
+      },
+      {
+        "mode": "REQUIRED",
+        "name": "ZoneName",
+        "type": "STRING"
+      },
+      {
+        "description": "Time Interval covered by this row",
+        "fields": [
+          {
+            "description": "Start time",
+            "mode": "REQUIRED",
+            "name": "From",
+            "type": "DATETIME"
+          },
+          {
+            "description": "End time",
+            "mode": "REQUIRED",
+            "name": "To",
+            "type": "DATETIME"
+          }
+        ],
+        "mode": "REQUIRED",
+        "name": "Interval",
+        "type": "RECORD"
+      },
+      {
+        "description": "What the heating was set to",
+        "fields": [
+          {
+            "description": "Setting applies from this time",
+            "mode": "REQUIRED",
+            "name": "From",
+            "type": "DATETIME"
+          },
+          {
+            "description": "Setting applies until this time",
+            "mode": "REQUIRED",
+            "name": "To",
+            "type": "DATETIME"
+          },
+          {
+            "description": "Set Temperature in Celsius",
+            "mode": "REQUIRED",
+            "name": "Temperature",
+            "type": "FLOAT"
+          }
+        ],
+        "mode": "REPEATED",
+        "name": "Settings",
+        "type": "RECORD"
+      },
+      {
+        "description": "Measured data from the valve",
+        "fields": [
+          {
+            "fields": [
+              {
+                "description": "Timestamp of the measurement",
+                "mode": "REQUIRED",
+                "name": "Timestamp",
+                "type": "TIMESTAMP"
+              },
+              {
+                "description": "Measured temperature in Celsius",
+                "mode": "REQUIRED",
+                "name": "Temperature",
+                "type": "FLOAT"
+              }
+            ],
+            "mode": "REPEATED",
+            "name": "InsideTemperature",
+            "type": "RECORD"
+          },
+          {
+            "fields": [
+              {
+                "description": "Timestamp of the humidity measurement",
+                "mode": "REQUIRED",
+                "name": "Timestamp",
+                "type": "TIMESTAMP"
+              },
+              {
+                "description": "Humidity percentage",
+                "mode": "REQUIRED",
+                "name": "Humidity",
+                "type": "FLOAT"
+              }
+            ],
+            "mode": "REPEATED",
+            "name": "Humidity",
+            "type": "RECORD"
+          }
+        ],
+        "mode": "REPEATED",
+        "name": "MeasuredData",
+        "type": "RECORD"
+      },
+      {
+        "description": "Records when the valve calls for heat",
+        "fields": [
+          {
+            "description": "Called for heat from",
+            "mode": "REQUIRED",
+            "name": "From",
+            "type": "DATETIME"
+          },
+          {
+            "description": "Called for heat until",
+            "mode": "REQUIRED",
+            "name": "To",
+            "type": "DATETIME"
+          },
+          {
+            "description": "None, Low, Medium, High heating rate",
+            "mode": "REQUIRED",
+            "name": "HeatRate",
+            "type": "STRING"
+          }
+        ],
+        "mode": "REPEATED",
+        "name": "CallForHeat",
+        "type": "RECORD"
+      },
+      {
+        "description": "Reported weather conditions",
+        "fields": [
+          {
+            "mode": "REQUIRED",
+            "name": "From",
+            "type": "DATETIME"
+          },
+          {
+            "mode": "REQUIRED",
+            "name": "To",
+            "type": "DATETIME"
+          },
+          {
+            "description": "Weather enum - e.g. NIGHT_CLOUDY",
+            "mode": "REQUIRED",
+            "name": "State",
+            "type": "STRING"
+          },
+          {
+            "description": "External temperature in Celsius",
+            "mode": "REQUIRED",
+            "name": "Temperature",
+            "type": "FLOAT"
+          }
+        ],
+        "mode": "REPEATED",
+        "name": "Weather",
+        "type": "RECORD"
+      }
+    ]
