@@ -363,3 +363,9 @@ type TadoZoneDayReport struct {
 		} `json:"slots"`
 	} `json:"weather"`
 }
+
+type TadoZoneDetailsReport struct {
+	ZoneID   int
+	ZoneName string
+	Report   TadoZoneDayReport
+}
