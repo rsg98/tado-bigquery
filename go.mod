@@ -4,6 +4,7 @@ go 1.20
 
 require (
 	cloud.google.com/go/bigquery v1.49.0
+	github.com/GoogleCloudPlatform/protoc-gen-bq-schema v0.0.0-20220624154704-34288dc182e3
 	github.com/robertkrimen/otto v0.2.1
 	golang.org/x/oauth2 v0.6.0
 	google.golang.org/protobuf v1.30.0

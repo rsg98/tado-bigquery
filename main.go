@@ -162,14 +162,16 @@ func parseZoneReportToProto(zoneReports []TadoZoneDetailsReport) ([][]byte, erro
 	msgs := make([][]byte, len(zoneReports))
 
 	for n, z := range zoneReports {
+		// data conversions from proto to bq as per:
+		// https://cloud.google.com/bigquery/docs/write-api#data_type_conversions
 
 		// extract all the set temperatures from the Tado report
 		settingsData := z.Report.Settings.DataIntervals
 		settingsList := make([]*pb.Tadodailyreport_Settings, len(settingsData))
 		for i := 0; i < len(settingsData); i++ {
 			settingsList[i] = &pb.Tadodailyreport_Settings{
-				From:        proto.Int64(settingsData[i].From.Unix()),
-				To:          proto.Int64(settingsData[i].To.Unix()),
+				From:        proto.String(settingsData[i].From.Format("2006-01-02 15:04:05")),
+				To:          proto.String(settingsData[i].To.Format("2006-01-02 15:04:05")),
 				Temperature: proto.Float32(float32(settingsData[i].Value.Temperature.Celsius)),
 			}
 		}
@@ -179,8 +181,8 @@ func parseZoneReportToProto(zoneReports []TadoZoneDetailsReport) ([][]byte, erro
 		weatherList := make([]*pb.Tadodailyreport_Weather, len(weatherData))
 		for i := 0; i < len(weatherData); i++ {
 			weatherList[i] = &pb.Tadodailyreport_Weather{
-				From:        proto.Int64(weatherData[i].From.Unix()),
-				To:          proto.Int64(weatherData[i].To.Unix()),
+				From:        proto.String(weatherData[i].From.Format("2006-01-02 15:04:05")),
+				To:          proto.String(weatherData[i].To.Format("2006-01-02 15:04:05")),
 				Temperature: proto.Float32(float32(weatherData[i].Value.Temperature.Celsius)),
 				State:       proto.String(weatherData[i].Value.State),
 			}
@@ -191,8 +193,8 @@ func parseZoneReportToProto(zoneReports []TadoZoneDetailsReport) ([][]byte, erro
 		callheatList := make([]*pb.Tadodailyreport_Callforheat, len(callheatData))
 		for i := 0; i < len(callheatData); i++ {
 			callheatList[i] = &pb.Tadodailyreport_Callforheat{
-				From:     proto.Int64(callheatData[i].From.Unix()),
-				To:       proto.Int64(callheatData[i].To.Unix()),
+				From:     proto.String(callheatData[i].From.Format("2006-01-02 15:04:05")),
+				To:       proto.String(callheatData[i].To.Format("2006-01-02 15:04:05")),
 				HeatRate: proto.String(callheatData[i].Value),
 			}
 		}
@@ -201,7 +203,7 @@ func parseZoneReportToProto(zoneReports []TadoZoneDetailsReport) ([][]byte, erro
 		humidityList := make([]*pb.Tadodailyreport_Measureddata_Humidity, len(humidityData))
 		for i := 0; i < len(humidityData); i++ {
 			humidityList[i] = &pb.Tadodailyreport_Measureddata_Humidity{
-				Timestamp: proto.Int64(humidityData[i].Timestamp.Unix()),
+				Timestamp: proto.Int64(humidityData[i].Timestamp.UnixMicro()),
 				Humidity:  proto.Float32(float32(humidityData[i].Value)),
 			}
 		}
@@ -210,20 +212,19 @@ func parseZoneReportToProto(zoneReports []TadoZoneDetailsReport) ([][]byte, erro
 		insidetempList := make([]*pb.Tadodailyreport_Measureddata_Insidetemperature, len(insidetempData))
 		for i := 0; i < len(insidetempData); i++ {
 			insidetempList[i] = &pb.Tadodailyreport_Measureddata_Insidetemperature{
-				Timestamp:   proto.Int64(insidetempData[i].Timestamp.Unix()),
+				Timestamp:   proto.Int64(insidetempData[i].Timestamp.UnixMicro()),
 				Temperature: proto.Float32(float32(insidetempData[i].Value.Celsius)),
 			}
 		}
 
-		measuredList := make([]*pb.Tadodailyreport_Measureddata, 1)
-		measuredList[0] = &pb.Tadodailyreport_Measureddata{
+		measuredList := &pb.Tadodailyreport_Measureddata{
 			InsideTemperature: insidetempList,
 			Humidity:          humidityList,
 		}
 
 		reportInterval := &pb.Tadodailyreport_Interval{
-			From: proto.Int64(z.Report.Interval.From.Unix()),
-			To:   proto.Int64(z.Report.Interval.To.Unix()),
+			From: proto.String(z.Report.Interval.From.Format("2006-01-02 15:04:05")),
+			To:   proto.String(z.Report.Interval.To.Format("2006-01-02 15:04:05")),
 		}
 
 		dayReportRow := &pb.Tadodailyreport{

@@ -2,22 +2,27 @@ syntax = "proto2";
 
 option go_package = "github.com/rsg98/tado-bigquery/protos/tadodailyreport";
 
-package main;
+package tadodailyreport;
+
+import "bq_table.proto";
+import "bq_field.proto";
 
 message Tadodailyreport {
+option (gen_bq_schema.bigquery_opts).table_name = "tado_heating";
+
 	required int64 zone_id = 1;
 	required string zone_name = 2;
 	
 	message Interval {
-		required int64 from = 1;
-		required int64 to = 2;
+		required string from = 1 [(gen_bq_schema.bigquery) = { type_override: 'DATETIME' }];
+		required string to = 2 [(gen_bq_schema.bigquery) = { type_override: 'DATETIME' }];
 	}
 
 	required Interval interval = 3;
 	
 	message Settings {
-		required int64 from = 1;
-		required int64 to = 2;
+		required string from = 1 [(gen_bq_schema.bigquery) = { type_override: 'DATETIME' }];
+		required string to = 2 [(gen_bq_schema.bigquery) = { type_override: 'DATETIME' }];
 		required float temperature = 3;
 	}
 
@@ -26,33 +31,33 @@ message Tadodailyreport {
 	message Measureddata {
 		
 		message Insidetemperature {
-			required int64 timestamp = 1;
+			required int64 timestamp = 1 [(gen_bq_schema.bigquery) = { type_override: 'TIMESTAMP' }];
 			required float temperature = 2;
 		}
 	
 		repeated Insidetemperature inside_temperature = 1;
 		
 		message Humidity {
-			required int64 timestamp = 1;
+			required int64 timestamp = 1 [(gen_bq_schema.bigquery) = { type_override: 'TIMESTAMP' }];
 			required float humidity = 2;
 		}
 	
 		repeated Humidity humidity = 2;
 	}
 
-	repeated Measureddata measured_data = 5;
+	required Measureddata measured_data = 5;
 	
 	message Callforheat {
-		required int64 from = 1;
-		required int64 to = 2;
+		required string from = 1 [(gen_bq_schema.bigquery) = { type_override: 'DATETIME' }];
+		required string to = 2 [(gen_bq_schema.bigquery) = { type_override: 'DATETIME' }];
 		required string heat_rate = 3;
 	}
 
 	repeated Callforheat call_for_heat = 6;
 	
 	message Weather {
-		required int64 from = 1;
-		required int64 to = 2;
+		required string from = 1 [(gen_bq_schema.bigquery) = { type_override: 'DATETIME' }];
+		required string to = 2 [(gen_bq_schema.bigquery) = { type_override: 'DATETIME' }];
 		required string state = 3;
 		required float temperature = 4;
 	}
